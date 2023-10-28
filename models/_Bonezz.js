@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-// const shortId = require('shortid');
+const shortId = require('shortid');
 
 const schema = mongoose.Schema;
-const appError = require("./utils/errorHandler");
+const appError = require("../utils/errorHandler");
 
 const _BonezzSchema = new schema(
   {

@@ -1,4 +1,4 @@
-const { User } = require("../Models/users");
+const { User } = require('../Models/user');
 const { jwtToken } = require("../utils/jwt");
 const appError = require("../utils/errorHandler");
 

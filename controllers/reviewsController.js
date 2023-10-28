@@ -1,4 +1,4 @@
-const { Reviews } = require('../Models/reviews')
+const { Reviews } = require('../Models/review')
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId
 const appError = require('../utils/errorHandler')

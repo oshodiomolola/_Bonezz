@@ -1,20 +1,22 @@
-const express = require('express');
-const _BonezzController = require('../controllers/_BonezzController');
-
+const express = require("express");
+const _BonezzController = require("../Controllers/_BonezzController");
+const authController = require("../Controllers/authController");
+const reviewsRoute = require("./reviewsRoute")
 
 const _BonezzRouter = express.Router();
 
-
 // ACCESSABLE BY BOTH LOGGED IN AND NON LOGGED IN USERS
-router.get("/allBlog", blogController.allBlog)
-router.get("/readBlog/:blogId", blogController.readBlog)
+_BonezzRouter.get("/allBlog", _BonezzController.allBlog);
+_BonezzRouter.get("/readBlog/:blogId", _BonezzController.readBlog);
 
 
-router.use(authController.isAuthenticated)
-router.use('/:blogId', reviewRoute)
 // ONLY ACCESSABLE BY LOGGED IN USERS
-router.post("/createblog", blogController.createBlog)
-router.get("/myBlog", blogController.myBlog)
-router.patch("/updateBlog/:blogId", blogController.updateBlog)
-router.delete("/deleteBlog/:blogId", blogController.deleteBlog)
-router.patch("/publishBlog/:blogId", blogController.publishBlog)
+_BonezzRouter.post("/createblog", authController.isAuthenticated, _BonezzController.createBlog);
+_BonezzRouter.get("/myBlog", authController.isAuthenticated, _BonezzController.myBlog);
+_BonezzRouter.put("/updateBlog/:blogId", authController.isAuthenticated, _BonezzController.updateBlog);
+_BonezzRouter.delete("/deleteBlog/:blogId", authController.isAuthenticated, _BonezzController.deleteBlog);
+_BonezzRouter.put("/publishBlog/:blogId", authController.isAuthenticated, _BonezzController.publishBlog);
+
+_BonezzRouter.use("/:blogId", authController.isAuthenticated, reviewsRoute);
+
+module.exports = _BonezzRouter

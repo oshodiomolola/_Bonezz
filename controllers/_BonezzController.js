@@ -1,9 +1,9 @@
 const { _Bonezz } = require("../Models/_Bonezz");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-const appError = require("../models/utils/errorHandler");
-const sendMail = require("../models/utils/email");
-const _BonezzSearch = require("../models/utils/query");
+const appError = require("../utils/errorHandler");
+const sendMail = require("../utils/email");
+const _BonezzSearch = require("../utils/query");
 
 const createBlog = async (req, res, next) => {
   try {

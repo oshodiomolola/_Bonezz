@@ -1,6 +1,6 @@
 require("dotenv").config();
 const jwt = require('jsonwebtoken');
-const { User } = require('../Models/users');
+const { User } = require('../Models/user');
 const appError = require('../utils/errorHandler');
 const sendMail = require('../utils/email');
 

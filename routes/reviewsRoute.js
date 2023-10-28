@@ -2,13 +2,13 @@ const express = require('express');
 const reviewsController = require('../Controllers/reviewsController');
 
 
-const router = express.Router({mergeParams:true});
+const reviewsRouter = express.Router({mergeParams:true});
 
 
-router.post("/makeReviews", reviewsController.writeReviews);
-router.get("/allReviews", reviewsController.viewReviews);
-router.patch("/:reviewId", reviewsController.updateReviews);
-router.delete("/:reviewId", reviewsController.deleteReviews);
+reviewsRouter.post("/makeReviews", reviewsController.writeReviews);
+reviewsRouter.get("/allReviews", reviewsController.viewReviews);
+reviewsRouter.patch("/:reviewId", reviewsController.updateReviews);
+reviewsRouter.delete("/:reviewId", reviewsController.deleteReviews);
 
 
 

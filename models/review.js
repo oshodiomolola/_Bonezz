@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const { _Bonezz } = require('../Models/_Bonezz')
+const { _Bonezz } = require('../Models/_Bonezz');
 
 const reviewsSchema = new Schema({
     user: {
@@ -35,7 +35,7 @@ reviewsSchema.pre(/^find/, function (next) {
     next();
 })
 
-reviewSchema.statics.calcAvgRating = async function (blogId) {
+reviewsSchema.statics.calcAvgRating = async function (blogId) {
     const stats = await this.aggregate([
         {
             $match: { blog: blogId }
@@ -54,7 +54,7 @@ reviewSchema.statics.calcAvgRating = async function (blogId) {
     }, { new: true })
 }
 
-reviewSchema.post('save', function () {
+reviewsSchema.post('save', function () {
     this.constructor.calcAvgRating(this.blog);
 
 })
