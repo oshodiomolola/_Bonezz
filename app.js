@@ -1,27 +1,35 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-const { connectTo_Bonezz } = require("./config");
+const { connectTo_Bonezz } = require("./Models/config");
 const usersRoute = require("./routes/userRoute");
-const _BonezzRoute = require("./routes/_BonezzRoute")
+const controller = require('./Controllers/usersController')
+const _BonezzRoute = require("./routes/_BonezzRoute");
 const appError = require("./utils/errorHandler");
 const errorHandler = require("./Controllers/errorController");
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT  ||8000;
 
 const app = express();
 connectTo_Bonezz();
 
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+app.get("/", (req, res) => {
+  res.send("Welcome to _Bonezz");
+});
+
+app.post("/signup", controller.signUp);
+app.post("/login", controller.login);
+app.post("/logout", controller.logout);
+app.post("reactivate", controller.reactivateAccount);
 
 app.use(errorHandler);
 
 app.use("/Users", usersRoute);
 app.use("/Bonezz", _BonezzRoute);
-
-app.get("/", (req, res) => {
-  res.send("Welcome to _Bonezz");
-});
 
 app.all("*", (req, res, next) => {
   next(new appError("page not found", 404));

@@ -17,29 +17,31 @@ const _BonezzSchema = new schema(
       type: String,
       required: [true, "Please provide book name"],
       toLowerCase: true,
+      Required: true
     },
     description: {
       type: String,
       required: true,
     },
     author: {
-      type: mongoose.Schema.ObjectId,
-      ref: "Users",
-      toLowerCase: true,
+      type: String,
+      ref: "Users"
     },
     readCount: {
       type: Number,
-      default: 0,
+      default: 0
     },
     readingTime: {
       type: Number,
     },
     bodyContent: {
       type: String,
+      required: true
     },
     tags: {
       type: String,
       toLowerCase: true,
+      required: true
     },
     state: {
       type: String,

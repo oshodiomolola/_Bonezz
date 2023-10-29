@@ -94,4 +94,57 @@ const logout = (req, res) => {
   return res.status(200).json({ message: "You are loggged out" });
 };
 
-module.exports = { signUp, login, updateProfile, deleteAccount, logout };
+const forgetPassword = async (req, res, next) => {
+  try {
+      const user = await User.findOne({ email: req.body.email })
+      if (!user) return next(new appError('this user does not exist', 404))
+      const resetToken = await user.createResetToken()
+
+      console.log(resetToken)
+      const emailMessage = `hey ${user.firstname} your passowrd reset code is :${resetToken}.\n
+kindly click on the url to reset your password at ${req.protocol}://${req.get('host')}/resetPassowrd/${resetToken}`
+      await sendEmail(emailMessage, user)
+      await user.save({ validateBeforeSave: false })
+      res.status(200).json({ message: 'your password reset token has been sent. check your mail box' })
+  } catch (err) {
+      new appError(err, 500)
+  }
+
+}
+
+const resetPassword = async (req, res, next) => {
+  try {
+      const hashedToken = await crypto.createHash('sha256').update(req.params.token).digest('hex')
+      const user = await User.findOne({ resetPasswordToken: hashedToken, resetTimeExp: { $gt: Date.now() } })
+      if (!user) return next(new appError('invalid token or expired token', 404))
+
+      user.password = req.body.password
+      user.resetPasswordToken = undefined
+      user.resetTimeExp = undefined
+
+      await user.save()
+      const token = await jwtToken(user._id)
+      res.cookie('jwt', token, { httpOnly: true });
+      res.status(200).json({ message: 'a new pasword has been set', token, user })
+
+
+  } catch (err) {
+      new appError(err, 500)
+  }
+}
+
+const reactivateAccount = async (req, res, next) => {
+  try {
+      const user = await User.findOne({ email: req.body.email }).select('-password')
+      if (!user) next(new appError('this user does not exist', 404))
+      user.active = true
+      const message = `Hey ${user.firstname}, we are excited to have you on board with us .\n kindly confirm your email.`
+      await sendEmail(message, user)
+      await user.save()
+      res.status(200).json({ message: `welcome back ${user.username}. your account has been re-activated`, user })
+  } catch (err) {
+      new appError(err, 500)
+  }
+}
+
+module.exports = { signUp, login, updateProfile, deleteAccount, logout, forgetPassword, resetPassword, reactivateAccount };
