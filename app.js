@@ -25,7 +25,6 @@ app.post("/login", controller.login);
 app.post("/logout", controller.logout);
 app.post("reactivate", controller.reactivateAccount);
 
-app.use(errorHandler);
 
 app.use("/Users", usersRoute);
 app.use("/Bonezz", _BonezzRoute);
@@ -33,6 +32,8 @@ app.use("/Bonezz", _BonezzRoute);
 app.all("*", (req, res, next) => {
   next(new appError("page not found", 404));
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App is listening at http://localhost:${PORT}`);

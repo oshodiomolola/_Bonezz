@@ -11,7 +11,7 @@ _BonezzRouter.get("/readBlog/:id", _BonezzController.readBlog);
 
 // ONLY ACCESSABLE BY LOGGED IN USERS
 _BonezzRouter.post(
-  "/createblog",
+  "/createBlog",
   authController.isAuthenticated,
   _BonezzController.createBlog
 );

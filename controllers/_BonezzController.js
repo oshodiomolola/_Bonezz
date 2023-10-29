@@ -51,14 +51,11 @@ const updateBlog = async (req, res, next) => {
   if (!req.user) {
     next(new appError("You are not authorized. Kindly sign up or login"));
   } else {
-    if (!req.user) {
-      return next(
-        new appError("You are not authorized. Kindly sign up or login")
-      );
+    
     }
 
     try {
-      const blog = await _Bonezz.findById(req.params.blogId);
+      const blog = await _Bonezz.findById(req.params.id);
       if (!blog) return next(new appError("this blog is not found", 404));
 
       if (blog.author.id === req.user.id) {
@@ -79,7 +76,7 @@ const updateBlog = async (req, res, next) => {
         }
 
         const updatedBlog = await _Bonezz.updateOne(
-          { _id: req.params.blogId },
+          { _id: req.params.id },
           updates
         );
 
@@ -95,12 +92,12 @@ const updateBlog = async (req, res, next) => {
       next(new appError(err, 500));
     }
   }
-};
+
 const deleteBlog = async (req, res, next) => {
-  const blog = await _Bonezz.findById(req.params.blogId);
+  const blog = await _Bonezz.findById(req.params.id);
   if (!blog) return next(new appError("this blog is not found", 404));
   if (blog.author.id === req.user.id) {
-    const deletedBlog = await _Bonezz.deleteOne({ _id: req.params.blogId });
+    const deletedBlog = await _Bonezz.deleteOne({ _id: req.params.id });
     res.status(203).json({
       result: "AWWWWNNNNN",
       message: "Blog has been deleted successfully. Write some more!!",
@@ -113,7 +110,7 @@ const deleteBlog = async (req, res, next) => {
 
 const publishBlog = async (req, res, next) => {
   try {
-    const blog = await _Bonezz.findById(req.params.blogId);
+    const blog = await _Bonezz.findById(req.params.id);
     if (!blog) return next(new appError("this blog is not found", 404));
     if (blog.author.id === req.user.id) {
       blog.state = "published";
@@ -133,7 +130,7 @@ const publishBlog = async (req, res, next) => {
 
 const readBlog = async (req, res, next) => {
   try {
-    const blog = await _Bonezz.findById(req.params.blogId).populate("reviews");
+    const blog = await _Bonezz.findById(req.params.id).populate("reviews");
     if (!blog) return next(new appError("this blog is not found", 404));
     else {
       blog.readCount = (blog.readCount || 0) + 1;

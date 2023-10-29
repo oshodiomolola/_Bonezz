@@ -38,7 +38,7 @@ class _BonezzSearch {
   }
   async searchByTitle(title, skip, pageSize) {
     const nonCaseSensitive = new RegExp(title, "i");
-    const blogs = await blogModel
+    const blogs = await _Bonezz
       .find({ title: nonCaseSensitive, state: "published" })
       .skip(skip)
       .limit(pageSize)
@@ -50,7 +50,7 @@ class _BonezzSearch {
 
   async searchByTags(tags, skip, pageSize) {
     const nonCaseSensitive = new RegExp(tags, "1");
-    const blogs = await blogModel
+    const blogs = await _Bonezz
       .find({ tags: nonCaseSensitive, state: "published" })
       .skip(skip)
       .limit(pageSize)
@@ -64,7 +64,7 @@ class _BonezzSearch {
     const firstname = authorName;
     console.log(firstname);
     const nonCaseSensitive = new RegExp(firstname, "i");
-    const blogs = await blogModel
+    const blogs = await _Bonezz
       .find({ "author.firstname": nonCaseSensitive, state: "published" })
       .skip(skip)
       .limit(pageSize)
@@ -76,7 +76,7 @@ class _BonezzSearch {
   async searchByState(state, skip, pageSize) {
     const user = this.req.user.id;
     const nonCaseSensitive = new RegExp(state, "i");
-    const blogs = await blogModel
+    const blogs = await _Bonezz
       .find({ state: nonCaseSensitive, author: user })
       .skip(skip)
       .limit(pageSize)
@@ -87,7 +87,7 @@ class _BonezzSearch {
   }
   async allMyBlogs(skip, pageSize) {
     const { id } = this.req.user;
-    const blogs = await blogModel
+    const blogs = await _Bonezz
       .find({ author: id })
       .skip(skip)
       .limit(pageSize)
@@ -98,7 +98,7 @@ class _BonezzSearch {
   }
 
   async getAllBlogs(skip, pageSize) {
-    const blogs = await blogModel
+    const blogs = await _Bonezz
       .find({ state: "published" })
       .skip(skip)
       .limit(pageSize)
@@ -118,4 +118,4 @@ class _BonezzSearch {
   }
 }
 
-module.exports = { _BonezzSearch };
+module.exports = _BonezzSearch
