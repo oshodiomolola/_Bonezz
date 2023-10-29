@@ -1,4 +1,4 @@
-const { _Bonezz } = require("../Models/_Bonezz");
+const { _Bonezz } = require("../models/_Bonezz");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const appError = require("../utils/errorHandler");

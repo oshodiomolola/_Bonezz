@@ -1,21 +1,20 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-const { connectTo_Bonezz } = require("./Models/config");
+const { connectTo_Bonezz } = require("./models/config");
 const usersRoute = require("./routes/userRoute");
-const controller = require('./Controllers/usersController')
+const controller = require("./controllers/usersController");
 const _BonezzRoute = require("./routes/_BonezzRoute");
 const appError = require("./utils/errorHandler");
-const errorHandler = require("./Controllers/errorController");
+const errorHandler = require("./controllers/errorController");
 
-const PORT = process.env.PORT  ||8000;
+const PORT = process.env.PORT || 8000;
 
 const app = express();
 connectTo_Bonezz();
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 app.get("/", (req, res) => {
   res.send("Welcome to _Bonezz");
